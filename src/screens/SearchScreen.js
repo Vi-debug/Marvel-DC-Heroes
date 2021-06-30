@@ -1,29 +1,32 @@
 import React, { useState } from 'react'
-import { View, Text, Image, StyleSheet, TextInput, FlatList, TouchableHighlight, TouchableWithoutFeedback } from 'react-native'
+import { useSelector, useDispatch } from 'react-redux'
+import { View, Text, Image, StyleSheet, TextInput, FlatList, TouchableHighlight, KeyboardAvoidingView } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { getHeroes } from '../redux/actions'
 
-const SearchScreen = () => (
-  <View style={{ flex: 1 }}>
-    <Image source={require('../background1.png')} style={searchStyles.backGround} resizeMethod='resize' resizeMode='cover' />
-    <SearchForm></SearchForm>
-  </View>
-)
+
+const SearchScreen = () => {
+  return (
+    <View style={{ flex: 1 }}>
+      <Image source={require('../background1.png')} style={searchStyles.backGround} />
+      <SearchForm></SearchForm>
+    </View>
+  )
+}
 
 const SearchForm = () => {
   const [heroName, setHeroName] = useState('')
-  const [listHeroes, setListHeroes] = useState([])
   return (<View style={searchStyles.form}>
     <Text style={searchStyles.title}>Marvel DC Heroes</Text>
     <HeroNameInput
       heroName={heroName}
       setHeroName={setHeroName}
-      setListHeroes = {setListHeroes}
-    ></HeroNameInput>
-    <FlatListHeroes listHeroes={listHeroes}/>
+    />
+    <FlatListHeroes/>
   </View>)
 }
 
-const HeroNameInput = ({ heroName, setHeroName, setListHeroes }) => {
+const HeroNameInput = ({ heroName, setHeroName }) => {
   return (
     <View style={{ flexDirection: 'row', marginTop: 20, alignItems: "center", height: 50 }}>
       <TextInput
@@ -34,40 +37,31 @@ const HeroNameInput = ({ heroName, setHeroName, setListHeroes }) => {
           setHeroName(text)
         }}
       />
-      <SearchButton heroName={heroName} setListHeroes = {setListHeroes}></SearchButton>
+      <SearchButton heroName={heroName}/>
     </View>
   )
 }
 
 
-function SearchButton({heroName, setListHeroes}) {
+function SearchButton({ heroName }) {
+  const dispatch = useDispatch();
+  const fetchHeroes = (heroName) => dispatch(getHeroes(heroName))
   return (
     <TouchableHighlight
       style={searchStyles.searchButton}
-      onPress={() =>findHero(heroName, setListHeroes)}>
-      <Icon name='search-web' size={26} color='white'>
-      </Icon>
+      onPress={() => fetchHeroes(heroName)}>
+      <Icon name='search-web' size={26} color='white'/>
     </TouchableHighlight>
   );
 }
 
-async function findHero(heroName, setListHeroes) {
-  try {
-    let response = await fetch(`https://www.superheroapi.com/api.php/2921691641435744/search/${heroName}`)
-    let json = await response.json()
-    const results = json.results
-    setListHeroes(results)
-  } catch (error) {
-    console.log(error)
-  }
-}
 
-const FlatListHeroes = ({ listHeroes }) => {
-  console.log(listHeroes)
-  return (listHeroes != undefined && listHeroes.length > 0) ? (
+const FlatListHeroes = () => {
+  const { heroes } = useSelector(state => state.heroesReducer)
+  return (heroes != undefined && heroes.length > 0) ? (
     <FlatList
       style={searchStyles.flatList}
-      data={listHeroes}
+      data={heroes}
       renderItem={({ item }) => (
         <View style={{ width: "100%", flexDirection: 'row' }}>
           <Image source={{ uri: item.image.url }} style={{ width: 70, height: 100, marginBottom: 10 }} />

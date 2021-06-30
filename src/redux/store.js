@@ -1,9 +1,8 @@
-import { createStore, combineReducers, applyMiddleware } from "redux";
-import thunk from 'redux-thunk'
-import heroesReducer from './reducer'
+import { configureStore } from "@reduxjs/toolkit"
+import heroesReducer from './slice'
 
-const rootReducer = combineReducers({
-  heroesReducer
+export const store = configureStore({
+  reducer: {
+    heroes: heroesReducer
+  }
 })
-
-export const store = createStore(rootReducer, applyMiddleware(thunk))

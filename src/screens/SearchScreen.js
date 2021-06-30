@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { View, Text, Image, StyleSheet, TextInput, FlatList, TouchableHighlight, KeyboardAvoidingView } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { getHeroes } from '../redux/actions'
+import { getHeroes } from '../redux/slice'
 
 
 const SearchScreen = () => {
@@ -45,11 +45,10 @@ const HeroNameInput = ({ heroName, setHeroName }) => {
 
 function SearchButton({ heroName }) {
   const dispatch = useDispatch();
-  const fetchHeroes = (heroName) => dispatch(getHeroes(heroName))
   return (
     <TouchableHighlight
       style={searchStyles.searchButton}
-      onPress={() => fetchHeroes(heroName)}>
+      onPress={() => dispatch(getHeroes(heroName))}>
       <Icon name='search-web' size={26} color='white'/>
     </TouchableHighlight>
   );
@@ -57,11 +56,12 @@ function SearchButton({ heroName }) {
 
 
 const FlatListHeroes = () => {
-  const { heroes } = useSelector(state => state.heroesReducer)
-  return (heroes != undefined && heroes.length > 0) ? (
+  // get the state of store by using useSelector
+  const { listHeroes } = useSelector(state => state.heroes)
+  return (listHeroes != undefined && listHeroes.length > 0) ? (
     <FlatList
       style={searchStyles.flatList}
-      data={heroes}
+      data={listHeroes}
       renderItem={({ item }) => (
         <View style={{ width: "100%", flexDirection: 'row' }}>
           <Image source={{ uri: item.image.url }} style={{ width: 70, height: 100, marginBottom: 10 }} />

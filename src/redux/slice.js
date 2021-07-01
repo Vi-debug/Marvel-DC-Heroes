@@ -14,21 +14,16 @@ export const heroesSlice = createSlice({
   }
 })
 
-export const getHeroes = (heroName) => {
-  const getHeroesByName = heroesSlice.actions.getHeroesByName.type
+export const getHeroes = async (heroName) =>  {
   try {
-    return async dispatch => {
-      let response = await fetch(`https://www.superheroapi.com/api.php/2921691641435744/search/${heroName}`)
-      let json = await response.json()
-      const results = json.results
-      dispatch({
-        type: getHeroesByName,
-        payload: results
-      })
-    }
+    let response = await fetch(`https://www.superheroapi.com/api.php/2921691641435744/search/${heroName}`)
+    let json = await response.json()
+    const results = json.results
+    return results
   } catch (error) {
     console.log(error)
   }
 }
 
+export const getHeroesAction = heroesSlice.actions.getHeroesByName
 export default heroesSlice.reducer

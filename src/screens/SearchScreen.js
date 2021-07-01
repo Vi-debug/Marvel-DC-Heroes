@@ -48,7 +48,7 @@ function SearchButton({ heroName }) {
   return (
     <TouchableHighlight
       style={searchStyles.searchButton}
-      onPress={() => dispatch(getHeroes(heroName))}>
+      onPress={() => dispatch({ type: 'FIND_HEROES_ASYNC', payload: heroName})}>
       <Icon name='search-web' size={26} color='white'/>
     </TouchableHighlight>
   );
@@ -57,7 +57,7 @@ function SearchButton({ heroName }) {
 
 const FlatListHeroes = () => {
   // get the state of store by using useSelector
-  const { listHeroes } = useSelector(state => state.heroes)
+  const { listHeroes } = useSelector(state => state)
   return (listHeroes != undefined && listHeroes.length > 0) ? (
     <FlatList
       style={searchStyles.flatList}

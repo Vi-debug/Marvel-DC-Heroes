@@ -1,12 +1,14 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { call, fork, put, take, takeEvery, takeLatest } from 'redux-saga/effects'
 import { getHeroes } from './slice'
 import { getHeroesAction } from './slice'
 
-export function* watchFindHeroAsync() {
-  yield takeEvery('FIND_HEROES_ASYNC', findHeroesAsync)
+export function* onFindHeroRequest() {
+  yield takeLatest('FIND_HEROES_ASYNC', fetchHeroes)
 }
 
-export function* findHeroesAsync(action) {
-  const listHeroes = yield call(getHeroes, action.payload)
-  yield put({type: getHeroesAction.type, payload: listHeroes})
+function* fetchHeroes(action) {
+  const heroName = action.payload
+  const listHeroes = yield call(getHeroes, heroName)
+  console.log(heroName)
+  yield put({ type: getHeroesAction.type, payload: listHeroes })
 }

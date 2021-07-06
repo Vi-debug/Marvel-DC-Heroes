@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 
 import { store } from './src/redux/store';
 import SearchScreen from './src/screens/SearchScreen';
+import DetailScreen from './src/screens/DetailScreens';
 
 
 const Stack = createStackNavigator();
@@ -16,6 +17,10 @@ const App = () => (
         <Stack.Screen
           name="Search"
           component={SearchScreen}
+        />
+        <Stack.Screen
+          name="Detail"
+          component={DetailScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

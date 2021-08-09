@@ -1,7 +1,6 @@
 import React, { createContext, useContext } from 'react'
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-
 const HeroContext = createContext(null)
 
 const DetailScreen = ({ route }) => {
@@ -66,7 +65,7 @@ const HeroPowerStats = () => {
       </View>
       <View style={{flexDirection: 'row'}}>
         <PowerStat category='Speed' stat={speed} color={redDark} reverse={true}/>
-        <PowerStat category='Combat' stat={combat} color={yellow} />
+        <PowerStat category='Combat' stat={combat} color={yellow} />    
       </View>
     </View>
   )
@@ -74,7 +73,7 @@ const HeroPowerStats = () => {
 
 const PowerStat = ({category, stat, color, reverse = false}) => {
   const hero = useContext(HeroContext)
-  return (
+   return (
     <View style ={{flexDirection: reverse ? 'row-reverse' : 'row', flex: 1}}>
       <View style={[detailStyle.powerStat]}>
         <Text style={{color: 'white', fontWeight: 'bold', fontSize: 13}}>{category.toUpperCase()}</Text>
@@ -125,7 +124,6 @@ function standardizedValue(value) {
   if (typeof value === 'string') return value === '-' ? 'unknown' : value
   return value.join('\n')
 }
-
 const black = '#3A3A3C'
 const orange = '#C6722A'
 const red = '#BF452E'
@@ -133,6 +131,7 @@ const redDark = '#84251A'
 const blue = '#79A3B3'
 const green = '#7F8D74'
 const yellow = '#C1912D'
+
 
 const detailStyle = StyleSheet.create({
   nameText: {
